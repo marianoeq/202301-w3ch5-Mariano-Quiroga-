@@ -18,7 +18,8 @@ export class Card extends Component {
 <ul>
     <li class='list'>
     <img src='${this.pokemon.img}' />
-    <p> ${this.pokemon.name}</p>
+    <p> ${this.pokemon.name.toUpperCase()}</p>
+    <button class='btn-fav'>Add to fav ❤️ </button>
     </li>
 </ul>
     `;
