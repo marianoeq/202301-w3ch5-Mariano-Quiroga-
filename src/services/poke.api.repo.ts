@@ -1,6 +1,6 @@
+/* eslint-disable no-debugger */
 /* eslint-disable array-callback-return */
 /* eslint-disable prefer-const */
-/* eslint-disable prefer-destructuring */
 /* eslint-disable no-unused-vars */
 
 import { PokemonStructure } from '../models/models';
@@ -21,24 +21,24 @@ export class pokeApiRepo {
     this.url = 'https://pokeapi.co/api/v2/pokemon/';
   }
 
-  async getAllPokes(): Promise<PokemonStructure> {
+  async getAllPokes(): Promise<PokemonStructure[]> {
     const resp = await fetch(this.url);
-    const data = (await resp.json()) as PokemonStructure;
-    const results = data.results;
+    const data = await resp.json();
+    const { results } = data;
 
     const pokePromise = results.map(async (item: any) => {
-      let url = item.url;
-      const response = await fetch(url);
+      const response = await fetch(item.url);
       const dataPokemon = await response.json();
       return dataPokemon;
     });
     const pokemonData = await Promise.all(pokePromise);
-    const pokemonObject = pokemonData.map((details: any) => ({
+    const myPokes = pokemonData.map((details) => ({
       id: details.id,
       name: details.name,
       img: details.sprites.front_default,
+      isFavorite: false,
     }));
-    return pokemonObject;
+    return myPokes;
   }
 
   async getPokeById(id: PokemonStructure['id']): Promise<PokemonStructure[]> {
@@ -58,7 +58,7 @@ export class pokeApiRepo {
   }
 
   async deletePoke(name: PokemonStructure['name']): Promise<void> {
-    const resp = await fetch(this.url + '/' + name, {
+    await fetch(this.url + '/' + name, {
       method: 'DELETE',
     });
   }
