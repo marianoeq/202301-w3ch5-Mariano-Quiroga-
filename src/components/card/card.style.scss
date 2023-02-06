@@ -1,3 +1,15 @@
+ul {
+  padding: 0;
+}
+
 .list {
   list-style-type: none;
+  border: 1px solid gold;
+}
+
+.btn-fav {
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  cursor: copy;
 }
